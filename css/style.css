@@ -1,0 +1,479 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+* {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Variables */
+:root {
+    --bg-color: #F4CAE0;
+    --bg-secondary-color: #D7B9D5;
+    --main-color: #64A6BD;
+    --disabled-color: #ADA7C9;
+    --accent-color: #90A8C3;
+    --text-color: #333;
+}
+
+/* Body Styling */
+body {
+    background: var(--bg-color);
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--bg-color);
+    padding: 0;
+}
+
+.container-fluid {
+    padding: 10px;
+    background-color: var(--bg-color);
+}
+
+.navbar-brand, .navbar-brand:hover {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    font-weight: 700;
+}
+
+.nav-item a {
+    font-weight: 500;
+    color: var(--text-color);
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-item a:hover,
+.nav-item a.act {
+    color: var(--main-color);
+}
+
+/* Navbar Toggle Button */
+.navbar-toggler {
+    color: var(--main-color);
+    border: none;
+}
+
+/* Section */
+section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 1rem 9% 1rem;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+}
+section.active{
+    overflow: auto;
+    opacity: 1;
+    visibility: visible;
+}
+/* Home Section */
+.home {
+    display: flex;
+    align-items: center;
+    gap: 6rem;
+}
+
+.home-details h1 {
+    font-size: clamp(2rem, 6vw, 4rem);
+    margin-bottom: 0.5rem;
+}
+
+.animated-titles {
+    position: relative;
+    height: 2.5rem; /* Adjust based on your h2 height */
+    overflow: hidden; /* Prevents overlap */
+}
+
+.animated-titles h2 {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    animation: slideFade 6s infinite ease-in-out;
+}
+
+.animated-titles h2:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.animated-titles h2:nth-child(2) {
+    animation-delay: 3s;
+}
+
+@keyframes slideFade {
+    0% { opacity: 0; transform: translateY(20px); }
+    10% { opacity: 1; transform: translateY(0); }
+    40% { opacity: 1; transform: translateY(0); }
+    60% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 0; transform: translateY(-20px); }
+}
+
+.home-details p {
+    font-size: 1.2rem;
+    margin: 1rem 0 2.5rem;
+    line-height: 1.6;
+}
+
+/* Buttons */
+.btn-sci {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.8rem 2.5rem;
+    background: var(--main-color);
+    border: 2px solid transparent; /* Default transparent border */
+    border-radius: 4rem;
+    box-shadow: 0 0 0.6rem rgba(100, 166, 189, 0.5);
+    font-size: 1.2rem;
+    color: var(--bg-color);
+    font-weight: 500;
+    box-sizing: border-box; /* Ensures border doesn't change the size */
+    transition: all .6s ease;
+}
+
+.btn:hover {
+    background: var(--bg-color);
+    color: var(--main-color);
+    border: 2px solid var(--main-color); 
+}
+
+
+/* Social Icons */
+.sci {
+    margin-left: 1.2rem;
+}
+
+.sci a {
+    display: inline-flex;
+    padding: 0.5rem;
+    border: 0.12rem solid var(--main-color);
+    border-radius: 50%;
+    font-size: 1.2rem;
+    color: var(--main-color);
+    margin: 0 0.5rem;
+}
+
+.sci a:hover {
+    background-color: var(--main-color);
+    color: var(--bg-color);
+    box-shadow: 0 0 0.6rem var(--main-color);
+}
+.home-img .img-box {
+    position: relative;
+    width: 32vw;
+    height: 32vw;
+    border-radius: 50%;
+    padding: 0.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.home-img .img-box {
+    position: relative;
+    width: 32vw;
+    height: 32vw;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Outer Rotating Conic Gradient */
+.home-img .img-box::after {
+    content: '';
+    position: absolute;
+    width: 130%; /* Slightly larger than img-box */
+    height: 130%;
+    border-radius: 50%;
+    background: conic-gradient(var(--main-color) 30%, transparent 70%);
+    animation: rotateGradient 4s linear infinite;
+    z-index: -1; 
+}
+
+/* Inner Solid Circular Border */
+.home-img .img-box::before {
+    content: '';
+    position: absolute;
+    width: 115%;
+    height: 115%;
+    border-radius: 50%;
+    border: 20px solid var(--main-color); /* Thick solid border */
+    box-shadow: 0 0 20px rgba(100, 166, 189, 0.5);
+    z-index: -2;
+}
+
+/* Image Box Styling */
+.home-img .img-box .img-iten {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Image Styling */
+.home-img .img-box .img-iten img {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transform: translateY(-5%);
+    border-radius: 50%;
+}
+
+/* Animation for Rotation */
+@keyframes rotateGradient {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/*services*/
+.heading{
+    font-size: 2.9rem;
+    text-align: center;
+    margin-bottom: 1.3rem;
+}
+.heading span{
+    color: var(--main-color);
+}
+.services-container{
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: 1.4rem;
+}
+.services-container .services-box{
+    padding: 2rem 1.7rem;
+    background-color: var(--bg-secondary-color);
+    border: .14rem solid var(--bg-secondary-color);
+    border-radius: .65rem;
+}
+.services-container .services-box:hover{
+    border-color: var(--main-color);
+    transform: scale(1.02);
+}
+.services-box .icon{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.services-box:hover .icon:not(a i){
+    color: var(--main-color);
+}
+.services-box .icon i{
+    font-size: 3rem;
+}
+.services-box .icon a{
+    display: inline-flex;
+    background-color: white;
+    border-radius: 50%;
+    padding: .65rem;
+    text-decoration: none;
+}
+.services-box:hover .icon a{
+    background-color: var(--main-color);
+}
+.services-box .icon a i{
+    font-size: 2rem;
+    color: var(--disabled-color);
+    transform: rotate(225deg);
+}
+.services-box .icon a:hover i{
+    transform: rotate(180deg);
+}
+.services-box h3{
+    font-size: 2rem;
+    margin: .4rem 0 1rem;
+}
+.services-box:hover h3{
+    color: var(--main-color);
+}
+.services-box p{
+    font-size: 1.1rem;
+}
+.resume-container{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+}
+.resume-box h2{
+    font-size: 3.5rem;
+}
+.resume-box p{
+    font-size: 1.2rem;
+}
+.resume-box desc{
+    margin: 1.3rem 0 2rem;
+}
+.resume-box .resume-btn{
+    width: 100%;
+    height: 3.5rem;
+    background-color: var(--bg-secondary-color);
+    border: .15rem solid var(--bg-secondary-color);
+    font-size: 1.3rem;
+    color: white;
+    font-weight: 500;
+    margin-bottom: 1.4rem;
+    border-radius: .5rem;
+    cursor: pointer;
+}
+.resume-box .resume-btn.active{
+    border-color: var(--main-color);
+    color: var(--main-color);
+}
+.resume-box .heading{
+    font-size: 2.8rem;
+    text-align: left;
+}
+
+.resume-detail{
+    display: none;
+}
+.resume-detail.active{
+    display: block;
+}
+.resume-list{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(23rem, 1fr));
+    gap: 1.3rem;
+    height: 35rem;
+    overflow: auto;
+}
+.resume-item{
+    background-color: var(--bg-secondary-color);
+    border-radius: .6rem;
+    padding: 2.5rem 2rem;
+    height: calc((35rem - 1.3rem)/2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.resume-item .year{
+    color: var(--main-color);
+}
+.resume-item h3{
+    font-size: 1.7rem;
+}
+.res .company{
+    position: relative;
+    margin-left: 1.3rem;
+    margin-bottom: 1.3rem;
+}
+.resume-item .company::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0; /* Ensure it's positioned correctly */
+    width: 10px; /* Set a width */
+    height: 10px; /* Set a height */
+    transform: translateY(-50%);
+    background-color: var(--main-color);
+    border-radius: 50%;
+    margin-left: -1.3rem;
+}
+/* Custom Scrollbar */
+/* Webkit-based browsers (Chrome, Edge, Safari) */
+.resume-detail.skills .resume-list::-webkit-scrollbar {
+    width: 4px !important; /* Reduce width */
+}
+
+.resume-detail.skills .resume-list::-webkit-scrollbar-thumb {
+    background-color: var(--main-color) !important; /* Apply main color */
+    border-radius: 50px; /* Smooth round edges */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+}
+
+.resume-detail.skills .resume-list::-webkit-scrollbar-track {
+    background: transparent !important; /* Hide track */
+}
+
+/* Ensure list has enough space for tooltips */
+.resume-detail.skills .resume-list {
+    scrollbar-color: var(--main-color) transparent;
+    scrollbar-width: thin;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    height: 22rem;
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden;
+    padding-top: 2rem; /* Avoid clipping top tooltips */
+    position: relative;
+}
+
+/* Resume item */
+.resume-detail.skills .resume-item {
+    position: relative; /* Needed for tooltip positioning */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    padding: 1rem;
+    text-align: center;
+}
+
+/* Icon styling */
+.resume-detail.skills .resume-item i {
+    font-size: 4.5rem;
+    transition: color 0.3s ease-in-out;
+}
+
+.resume-detail.skills .resume-item:hover i {
+    color: var(--main-color);
+}
+
+/* Tooltip effect */
+.resume-detail.skills .resume-item span {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    background-color: white;
+    color: var(--bg-color);
+    font-size: 1.15rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 0.4rem;
+    pointer-events: none;
+    opacity: 0;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Default tooltip position */
+.resume-detail.skills .resume-item:hover span {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+/* Special handling for the first row */
+.resume-detail.skills .resume-item:first-child span {
+    top: -30%;
+}
+
+.resume-detail.skills .resume-item:not(:first-child) span {
+    top: -30%;
+}
