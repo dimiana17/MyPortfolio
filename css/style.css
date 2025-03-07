@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
-
+html{
+    scroll-behavior: smooth;
+}
 * {
     font-family: "Poppins", sans-serif;
     margin: 0;
@@ -10,16 +12,82 @@
     outline: none;
     transition: all 0.3s ease-in-out;
 }
-
-/* Variables */
-:root {
-    --bg-color: #F4CAE0;
-    --bg-secondary-color: #D7B9D5;
-    --main-color: #64A6BD;
-    --disabled-color: #ADA7C9;
-    --accent-color: #90A8C3;
-    --text-color: #333;
+a{
+    text-decoration: none;
 }
+/* Variables */
+/* Light Mode (Default) */
+:root {
+    --bg-color: #F9F7F7;
+    --bg-secondary-color: #DBE2EF;
+    --main-color: #3F72AF;
+    --disabled-color: #112D4E;
+    --text-color: #112D4E;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button {
+    background-color: var(--bg-secondary-color);
+    color: var(--main-color);
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--main-color);
+    color: var(--bg-secondary-color);
+}
+
+.dark-mode {
+    --bg-color: #1E2022;
+    --bg-secondary-color: #52616B;
+    --main-color: #C9D6DF;
+    --disabled-color: #F7F9FC;
+    --text-color: #F7F9FC;
+}
+
+/* Default Button Style */
+#modeToggle {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* When Sun Icon (Light Mode) */
+#modeToggle .fa-sun {
+    color: #f39c12; /* Yellow */
+    animation: rotateSun 0.5s ease-in-out;
+}
+
+/* When Moon Icon (Dark Mode) */
+#modeToggle .fa-moon {
+    color: #3498db; /* Blue */
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Sun Rotation Animation */
+@keyframes rotateSun {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Moon Fade-in Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+
+
 
 /* Body Styling */
 body {
@@ -28,15 +96,29 @@ body {
 
 /* Navbar */
 .navbar {
-    background-color: var(--bg-color);
     padding: 0;
+    font-size: 1.1rem;
 }
 
 .container-fluid {
     padding: 10px;
     background-color: var(--bg-color);
+    
 }
-
+.nav{
+    visibility: hidden;
+    opacity: 0;
+}
+.nav.active{
+    animation: show-header 1s linear forwards;
+    animation-delay: .5s;
+}
+@keyframes show-header{
+    100%{
+        visibility: visible;
+        opacity: 1;
+    }
+}
 .navbar-brand, .navbar-brand:hover {
     font-size: 1.5rem;
     color: var(--text-color);
@@ -59,24 +141,78 @@ body {
     color: var(--main-color);
     border: none;
 }
+.bars-box{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+.bars-box .bar{
+    width: 100%;
+    height: 100%;
+    /* background: var(--bg-color); */
+    animation: hide-bars .5s ease-in-out;
+    animation-delay: .05s;
+}
+@keyframes hide-bars{
+    0%{
+        transform: translateY(0);
+    }
+    100%{
+        transform: translateY(-100%);
+    }
+}
+.bars-box.active .bar{
+        background: var(--bg-color);
 
+    animation: show-bars 1s ease-in-out;
+    animation-delay: .1s;
+}
+@keyframes show-bars{
+    0%{
+        transform: translateY(-100%);
+    }
+    100%{
+        transform: translateY(0);
+    }
+}
 /* Section */
+/* Default (Hidden Sections) */
 section {
     position: relative;
     width: 100%;
     min-height: 100vh;
-    padding: 1rem 9% 1rem;
+    padding: 1rem 9%;
+    /* background: var(--bg-color); */
     overflow: hidden;
     opacity: 0;
     visibility: hidden;
+    display: none; /* Completely remove from layout */
 }
-section.active{
+
+/* Active Sections (Restores Layout) */
+section.active {
+    display: block; /* Default for most sections */
     overflow: auto;
-    opacity: 1;
-    visibility: visible;
+    
+    animation: show-content .5s linear forwards;
+    animation-delay: 1s;
 }
+@keyframes show-content{
+    0%{
+        visibility: visible;
+        opacity: 0;
+        overflow: auto;
+    }
+    100%{
+        visibility: visible;
+        opacity: 1;
+        overflow: auto;
+    }
+}
+
 /* Home Section */
-.home {
+.home.active {
     display: flex;
     align-items: center;
     gap: 6rem;
@@ -170,57 +306,57 @@ section.active{
     color: var(--bg-color);
     box-shadow: 0 0 0.6rem var(--main-color);
 }
+
 .home-img .img-box {
     position: relative;
     width: 32vw;
     height: 32vw;
+    min-width: 250px; /* Ensures it doesn't become too small */
+    min-height: 250px;
     border-radius: 50%;
-    padding: 0.1rem;
+    padding: .19rem;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
 }
 
-.home-img .img-box {
-    position: relative;
-    width: 32vw;
-    height: 32vw;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
+
+
 
 /* Outer Rotating Conic Gradient */
 .home-img .img-box::after {
     content: '';
     position: absolute;
-    width: 130%; /* Slightly larger than img-box */
-    height: 130%;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
-    background: conic-gradient(var(--main-color) 30%, transparent 70%);
+    border-right: 2px solid var(--main-color); 
+    box-shadow: 0 0 20px rgba(100, 166, 189, 0.5);
+    z-index: -2;
     animation: rotateGradient 4s linear infinite;
-    z-index: -1; 
+    background: conic-gradient(var(--main-color) 30%, transparent 70%);
 }
 
 /* Inner Solid Circular Border */
 .home-img .img-box::before {
     content: '';
     position: absolute;
-    width: 115%;
-    height: 115%;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
-    border: 20px solid var(--main-color); /* Thick solid border */
+    border-right: 2px solid var(--main-color); 
     box-shadow: 0 0 20px rgba(100, 166, 189, 0.5);
     z-index: -2;
+    animation: rotateGradient 4s linear infinite;
+
+    background: conic-gradient(var(--main-color) 30%, transparent 70%);
 }
 
 /* Image Box Styling */
 .home-img .img-box .img-iten {
     position: relative;
-    width: 100%;
+    width: 200%;
     height: 100%;
     background: var(--bg-color);
     border-radius: 50%;
@@ -251,6 +387,38 @@ section.active{
 }
 
 
+/* General Navbar Styling */
+.navbar-nav {
+    gap: 15px; /* Adds spacing between menu items */
+  }
+  
+  /* Adjustments for smaller screens */
+  @media screen and (max-width: 991px) {
+    .navbar-nav {
+      text-align: center; /* Center align menu items in collapsed view */
+      width: 100%; /* Ensure full width for better mobile view */
+    }
+  
+    .navbar-nav .nav-item {
+      width: 100%; /* Make each item take full width */
+    }
+  
+    .navbar-toggler {
+      border: none; /* Remove border for a cleaner look */
+    }
+  }
+  
+  /* Extra small screens (phones) */
+  @media screen and (max-width: 576px) {
+    .navbar-brand {
+      font-size: 1.2rem; /* Reduce logo size */
+    }
+  
+    .navbar-nav {
+      font-size: 14px; /* Reduce font size for better fit */
+    }
+  }
+  
 /*services*/
 .heading{
     font-size: 2.9rem;
@@ -362,6 +530,7 @@ section.active{
     gap: 1.3rem;
     height: 35rem;
     overflow: auto;
+    
 }
 .resume-item{
     background-color: var(--bg-secondary-color);
@@ -451,7 +620,7 @@ section.active{
     position: absolute;
     left: 50%;
     transform: translateX(-50%) scale(0.9);
-    background-color: white;
+    background-color: var(--main-color);
     color: var(--bg-color);
     font-size: 1.15rem;
     padding: 0.35rem 0.65rem;
@@ -476,4 +645,322 @@ section.active{
 
 .resume-detail.skills .resume-item:not(:first-child) span {
     top: -30%;
+}
+
+
+/*portfolio section styles*/
+
+
+/* Existing styles (keep these) */
+.portfolio-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.portfolio-detail {
+    display: none;
+}
+
+.portfolio-detail.active {
+    display: block;
+}
+
+.portfolio-box .numb {
+    font-size: 4.8rem;
+    -webkit-text-stroke: 0.05rem white;
+    color: transparent;
+    line-height: 1;
+}
+
+.portfolio-box h3 {
+    font-size: 2.3rem;
+    margin: 0.6rem 0 1.3rem;
+}
+
+.portfolio-box p {
+    font-size: 1.1rem;
+}
+
+.portfolio-box .tech {
+    margin: 1.3rem 0;
+    color: var(--main-color);
+    border-bottom: 0.4rem solid white;
+    padding-bottom: 1.3rem;
+}
+
+.portfolio-box .live-github a {
+    position: relative;
+    display: inline-flex;
+    padding: 0.65rem;
+    font-size: 2.3rem;
+    color: white;
+    border-radius: 50%;
+    background-color: var(--bg-secondary-color);
+    transition: color 0.3s ease;
+}
+
+.portfolio-box .live-github a:hover {
+    color: var(--main-color);
+}
+
+.portfolio-box .live-github a:first-child {
+    margin-right: 1.5rem;
+}
+
+.portfolio-box .live-github a:first-child i {
+    transform: rotate(135deg);
+}
+
+.portfolio-box .live-github a span {
+    position: absolute;
+    top: -60%;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    font-size: 1.1rem;
+    white-space: nowrap;
+    padding: 0.325rem 0.65rem;
+    border-radius: 0.37rem;
+    pointer-events: none;
+    background-color: white;
+    color: var(--bg-color);
+    opacity: 0;
+    transition: opacity 0.3s ease, top 0.3s ease, transform 0.3s ease;
+}
+
+.portfolio-box .live-github a:hover span {
+    opacity: 1;
+    top: -70%;
+    transform: translateX(-50%) scale(1);
+}
+
+.portfolio-box .portfolio-carousel {
+    width: 100%;
+    height: 30rem;
+    border-radius: 0.65rem;
+    overflow: hidden;
+}
+
+.portfolio-carousel .img-slide {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+    gap: 1.3rem;
+    height: inherit;
+    transition: transform 0.3s ease-in-out;
+}
+
+.portfolio-carousel .img-item {
+    height: inherit;
+}
+
+.portfolio-carousel .img-item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0.65rem;
+}
+
+.portfolio-box .navigation {
+    text-align: center;
+    margin-top: 1.3rem;
+}
+
+.portfolio-box .navigation button {
+    display: inline-flex;
+    padding: 0.28rem;
+    background-color: var(--bg-secondary-color);
+    border: 0.13rem solid var(--main-color);
+    border-radius: 0.4rem;
+    font-size: 2.8rem;
+    cursor: pointer;
+    transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.portfolio-box .navigation .arrow-right {
+    margin-left: 1.2rem;
+}
+
+.portfolio-box .navigation button.disabled {
+    border-color: var(--bg-secondary-color);
+    color: var(--disabled-color);
+}
+
+/* New style for the category */
+.portfolio-detail p:nth-child(4) { /* Selects the 4th paragraph */
+    font-style: italic;
+    color: #888; /* Or any color you prefer */
+    margin-bottom: 1rem; /* Adjust spacing */
+    font-size: 1rem;
+}
+/* .portfolio-box .navigation button:hover {
+    background-color: var(--main-color);
+    color: var(--bg-secondary-color);
+    transform: scale(1.1); 
+}
+
+.portfolio-box .navigation .arrow-right {
+    margin-left: 1.2rem; 
+} */
+
+/*contact section*/
+.contact-container{
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 2rem;
+}
+.contact-container .contact-box:first-child{
+    align-self: center;
+}
+.contact-box h2{
+    font-size: 3rem;
+
+}
+.contact-box p{
+    font-size: 1.1rem;
+
+}
+.contact-box .desc{
+    margin: 1.1rem 0 1.65rem;
+}
+.contact-box .contact-detail{
+    display: flex;
+    align-items: center;
+    margin: 1.3rem 0;
+}
+.contact-detail i{
+    display: inline-flex;
+    background: var(--bg-secondary-color);
+    color: var(--main-color);
+    font-size: 1.95rem;
+    padding: .78rem;
+    border-radius: .42rem;
+    margin-right: .975rem;
+}
+
+.contact-detail .detail p:first-child{
+    color: var(--main-color);
+    margin-bottom: 0;
+}
+
+.contact-box form{
+    background: var(--bg-secondary-color);
+    padding: 2.1rem 2.275rem 2.275rem;
+    border-radius: .65rem;
+    text-align: center;
+}
+
+.contact-box .heading{
+    font-size: 2.275rem;
+}
+.contact-box .field-box{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.3rem;
+}
+.contact-box .field-box textarea,
+.contact-box .field-box input{
+    padding: .9rem;
+    background: var(--bg-color);
+    border: .11rem solid var(--bg-color);
+    border-radius: .42rem;
+    color: var(--main-color);
+}
+.contact-box .field-box textarea{
+    grid-column: 1/ -1;
+    height: 16rem;
+    resize: none;
+}
+.contact-box .field-box textarea:focus,
+.contact-box .field-box input:focus{
+    border-color: var(--main-color);
+}
+.contact-box .btn{
+    margin-top: 1.3rem;
+    cursor: pointer;
+}
+
+/*Break Points*/
+@media screen and (max-width: 1200px) {
+    html {
+        font-size: 90%;
+    }
+
+}
+
+@media screen and (max-width: 992px) {
+    header{
+        padding: 1.3rem 4%;
+    }
+    section{
+        padding: 6.5rem 4% 1.3rem;
+    }
+}
+@media screen and (max-width: 810px) {
+    .contact-box .field-box{
+        grid-template-columns: 1fr;
+    }
+}
+@media screen and (max-width: 768px){
+    .home{
+        flex-direction: column-reverse;
+        justify-content: center;
+        gap: 2rem;
+    }
+    .home-img .img-box{
+        width: calc(35rem*.65);
+        height: calc(35rem*.65);
+    }
+    .resume-container,
+    .portfolio-container,
+    .contact-container{
+        grid-template-columns: 1fr;
+    }
+    .resume-container{
+        gap: calc(3rem*0.65);
+    }
+    .portfolio-container .portfolio-box:first-child{
+        order: 1;
+    }
+    .contact-box .field-box{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 667px){
+    .home-img .img-box{
+        width: calc(30rem*.65);
+        height: calc(30rem*.65);
+    }
+    .contact-box .field-box{
+        grid-template-columns: 1fr;
+    }
+}
+@media screen and (max-width: 450px){
+    html{
+        font-size: 60%;
+    }
+}
+@media screen and (max-width: 450px){
+    .home-details,
+    .resume-box h2,
+    .resume-box .heading,
+    .resume-btn .desc,
+    .resume-detail.about .resume-item{
+        text-align: center;
+    }
+    .home-details .btn-sci{
+        flex-direction: column-reverse;
+    }
+    .home-details .btn-sci .sci{
+        margin-left: 0;
+        margin-bottom: 1.3rem;
+    }
+    .contact-box form{
+        padding: calc(2.5rem*.65) calc(3rem*.65) calc(3.5rem * .65);
+    }
+    .contact-box h2{
+        font-size: calc(3.5rem * .65);
+    }
 }
