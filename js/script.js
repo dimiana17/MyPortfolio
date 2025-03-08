@@ -1,3 +1,4 @@
+// script.js (Main Script)
 // Select navigation links and sections
 const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
 const sections = document.querySelectorAll('section');
@@ -21,8 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Restore selected category (if applicable)
-    const category = localStorage.getItem("selectedCategory") || "";
-    if (category) getCategory(category);
+    // Removed getCategory(category) because it is now handled by the custom event.
 });
 
 // Function to activate a specific page
@@ -43,6 +43,11 @@ navLinks.forEach((link, idx) => {
     link.addEventListener('click', () => {
         if (!link.classList.contains('act')) {
             setActivePage(idx);
+            // Clear category if portfolio section is clicked
+            if (link.getAttribute('href') === '#portfolio') {
+                localStorage.removeItem('selectedCategory');
+                window.dispatchEvent(new Event('portfolioSectionClicked'));
+            }
         }
     });
 });
@@ -72,44 +77,41 @@ resumeBtns.forEach((btn, idx) => {
     });
 });
 
-// Portfolio carousel navigation
-const arrowRight = document.querySelector('.portfolio-box .navigation .arrow-right');
-const arrowLeft = document.querySelector('.portfolio-box .navigation .arrow-left');
+// Portfolio carousel navigation (Moved to portfolio.js)
+// const arrowRight = document.querySelector('.portfolio-box .navigation .arrow-right');
+// const arrowLeft = document.querySelector('.portfolio-box .navigation .arrow-left');
 
-let index = 0; // Track current slide
-const activePortfolio = () => {
-    const imgSlide = document.querySelector('.portfolio-carousel .img-slide');
-    const portfolioDetails = document.querySelectorAll('.portfolio-detail');
+// let index = 0; // Track current slide
+// const activePortfolio = () => {
+//     const imgSlide = document.querySelector('.portfolio-carousel .img-slide');
+//     const portfolioDetails = document.querySelectorAll('.portfolio-detail');
 
-    imgSlide.style.transform = `translateX(calc(${index * -100}% - ${index * 1.3}rem))`;
+//     imgSlide.style.transform = `translateX(calc(${index * -100}% - ${index * 1.3}rem))`;
 
-    portfolioDetails.forEach(detail => detail.classList.remove('active'));
-    portfolioDetails[index].classList.add('active');
-};
+//     portfolioDetails.forEach(detail => detail.classList.remove('active'));
+//     portfolioDetails[index].classList.add('active');
+// };
 
 // Right Arrow Click
-arrowRight.addEventListener('click', () => {
-    if (index < 4) {
-        index++;
-        arrowLeft.classList.remove('disabled');
-    } else {
-        index = 5;
-        arrowRight.classList.add('disabled');
-    }
-    activePortfolio();
-});
+// arrowRight.addEventListener('click', () => {
+//     if (index < 4) {
+//         index++;
+//         arrowLeft.classList.remove('disabled');
+//     } else {
+//         index = 5;
+//         arrowRight.classList.add('disabled');
+//     }
+//     activePortfolio();
+// });
 
 // Left Arrow Click
-arrowLeft.addEventListener('click', () => {
-    if (index > 1) {
-        index--;
-        arrowRight.classList.remove('disabled');
-    } else {
-        index = 0;
-        arrowLeft.classList.add('disabled');
-    }
-    activePortfolio();
-});
-
-// Category selection for portfolio
-
+// arrowLeft.addEventListener('click', () => {
+//     if (index > 1) {
+//         index--;
+//         arrowRight.classList.remove('disabled');
+//     } else {
+//         index = 0;
+//         arrowLeft.classList.add('disabled');
+//     }
+//     activePortfolio();
+// });

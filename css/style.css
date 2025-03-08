@@ -21,7 +21,7 @@ a{
     --bg-color: #F9F7F7;
     --bg-secondary-color: #DBE2EF;
     --main-color: #3F72AF;
-    --disabled-color: #112D4E;
+    --disabled-color: #112d4e7d;
     --text-color: #112D4E;
 }
 
@@ -49,7 +49,7 @@ button:hover {
     --bg-color: #1E2022;
     --bg-secondary-color: #52616B;
     --main-color: #C9D6DF;
-    --disabled-color: #F7F9FC;
+    --disabled-color: grey;
     --text-color: #F7F9FC;
 }
 

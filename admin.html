@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Form Styling */
+form {
+    background: #fff;
+    padding: 20px;
+    max-width: 500px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    background: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #218838;
+}
+
+/* Table Styling */
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background: #007bff;
+    color: #fff;
+}
+
+td {
+    background: #f9f9f9;
+}
+button{
+    margin-bottom: 5px;
+    width: 10rem;
+}
+/* Buttons inside Table */
+td button {
+    background: #dc3545;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    color: white;
+    transition: background 0.3s ease;
+}
+
+td button:hover {
+    background: #c82333;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    form {
+        width: 90%;
+    }
+
+    table {
+        width: 100%;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <h2>Admin Panel - Manage Projects</h2>
+    <form id="projectForm">
+        <input type="hidden" id="projectId">
+        <input type="text" id="title" placeholder="Title" required>
+        <input type="text" id="category" placeholder="Category" required>
+        <textarea id="desc" placeholder="Description" required></textarea>
+        <input type="text" id="skills" placeholder="Skills (comma-separated)" required>
+        <input type="url" id="liveProject" placeholder="Live Project URL">
+        <input type="url" id="github" placeholder="GitHub Repo URL">
+        <input type="url" id="img" placeholder="Image URL">
+        <button type="submit">Save Project</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="projectsList"></tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const apiUrl = "http://localhost:5000/projects/";
+
+            async function fetchProjects() {
+                try {
+                    const projects = await $.get(apiUrl);
+                    $("#projectsList").empty();
+                    projects.forEach(project => {
+                        $("#projectsList").append(`
+                            <tr>
+                                <td>${project.title}</td>
+                                <td>${project.category}</td>
+                                <td>${project.desc}</td>
+                                <td>
+                                    <button onclick="editProject('${project._id}')">Edit</button>
+                                    <button onclick="deleteProject('${project._id}')">Delete</button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                } catch (error) {
+                    console.error("Error fetching projects:", error);
+                }
+            }
+
+            $("#projectForm").submit(async function (e) {
+                e.preventDefault();
+                const id = $("#projectId").val();
+                const projectData = {
+                    title: $("#title").val().trim(),
+                    category: $("#category").val().trim(),
+                    desc: $("#desc").val().trim(),
+                    skills: $("#skills").val().trim().split(",").map(skill => skill.trim()),
+                    liveProject: $("#liveProject").val().trim(),
+                    github: $("#github").val().trim(),
+                    img: $("#img").val().trim()
+                };
+
+                const method = id ? "PATCH" : "POST";
+                const url = id ? `${apiUrl}${id}` : apiUrl;
+
+                try {
+                    await $.ajax({ url, method, contentType: "application/json", data: JSON.stringify(projectData) });
+                    $("#projectForm")[0].reset();
+                    $("#projectId").val("");
+                    fetchProjects();
+                } catch (error) {
+                    console.error("Error saving project:", error);
+                }
+            });
+
+            window.editProject = async function (id) {
+                try {
+                    const project = await $.get(`${apiUrl}${id}`);
+                    $("#projectId").val(project._id);
+                    $("#title").val(project.title);
+                    $("#category").val(project.category);
+                    $("#desc").val(project.desc);
+                    $("#skills").val(project.skills.join(","));
+                    $("#liveProject").val(project.liveProject);
+                    $("#github").val(project.github);
+                    $("#img").val(project.img);
+                } catch (error) {
+                    console.error("Error fetching project:", error);
+                }
+            };
+
+            window.deleteProject = async function (id) {
+                if (confirm("Are you sure you want to delete this project?")) {
+                    try {
+                        await $.ajax({ url: `${apiUrl}${id}`, method: "DELETE" });
+                        fetchProjects();
+                    } catch (error) {
+                        console.error("Error deleting project:", error);
+                    }
+                }
+            };
+
+            fetchProjects();
+        });
+    </script>
+</body>
+</html>
